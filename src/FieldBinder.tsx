@@ -19,7 +19,7 @@ const FieldBinder: React.FC<FieldBinderType> = observer((props) => {
   const isRequired = !!props.required;
 
   let check = (newValue: any) => {
-    if (isRequired && newValue === undefined) {
+    if (isRequired && (newValue === undefined || newValue == '')) {
       return '请输入数据';
     } else {
       return '';
@@ -56,14 +56,11 @@ const FieldBinder: React.FC<FieldBinderType> = observer((props) => {
   if (hasDecorator) {
     let feedbackText = props.data[feedBackName] || '';
     if (feedbackText == '') {
-      decoratorProps = {
-        feedbackStatus: 'success',
-        feedbackText: '',
-      };
+      decoratorProps = {};
     } else {
       decoratorProps = {
-        feedbackStatus: 'success',
-        feedbackText: '',
+        feedbackStatus: 'error',
+        feedbackText: feedbackText,
       };
     }
     if (isRequired) {
@@ -71,6 +68,7 @@ const FieldBinder: React.FC<FieldBinderType> = observer((props) => {
     } else {
       decoratorProps.asterisk = false;
     }
+    console.log(feedbackText);
 
     decoratorElement = props.decorator!;
   }

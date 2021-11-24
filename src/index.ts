@@ -6,7 +6,7 @@ import {
   useFieldChecker,
 } from './FieldChecker';
 
-export default {
+export {
   FieldBinder,
   createFieldChecker,
   FieldCheckerContext,

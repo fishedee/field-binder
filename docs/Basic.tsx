@@ -8,10 +8,24 @@ import { observer } from '@formily/reactive-react';
 import { FormLayout, Input, FormItem, NumberPicker } from '@formily/antd';
 import { Button } from 'antd';
 import 'antd/dist/antd.css';
+import { observable } from '@formily/reactive';
+
+const MyInput: React.FC<any> = (props) => {
+  return (
+    <Input
+      {...props}
+      onChange={(e) => {
+        if (props.onChange) {
+          props.onChange(e.target.value);
+        }
+      }}
+    />
+  );
+};
 
 const Basic: React.FC<any> = observer((props) => {
   let data = useMemo(() => {
-    return {};
+    return observable({});
   }, []);
   let fieldChecker = useMemo(() => {
     return createFieldChecker();
@@ -34,7 +48,7 @@ const Basic: React.FC<any> = observer((props) => {
           required={true}
           decorator={<FormItem label="名字" />}
         >
-          <Input />
+          <MyInput />
         </FieldBinder>
 
         <FieldBinder
@@ -43,7 +57,7 @@ const Basic: React.FC<any> = observer((props) => {
           required={true}
           decorator={<FormItem label="年龄" />}
         >
-          <NumberPicker />
+          <MyInput />
         </FieldBinder>
         <div style={{ display: 'flex', gap: '10px' }}>
           <Button onClick={onClick}>{'查看数据'}</Button>
