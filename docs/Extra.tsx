@@ -25,7 +25,7 @@ const MyInput: React.FC<any> = (props) => {
 
 const Basic: React.FC<any> = observer((props) => {
   let data = useMemo(() => {
-    return observable({});
+    return observable({} as any);
   }, []);
   let fieldChecker = useMemo(() => {
     return createFieldChecker();
@@ -35,13 +35,15 @@ const Basic: React.FC<any> = observer((props) => {
     console.log('all data', data);
   };
 
-  const check = () => {
-    fieldChecker.check();
+  const check = async () => {
+    console.log('校验结果为：' + (await fieldChecker.check()));
   };
+
+  console.log('top render');
 
   return (
     <FieldCheckerProvider value={fieldChecker}>
-      <FormLayout>
+      <FormLayout layout={'vertical'}>
         <FieldBinder
           data={data}
           name={'name'}
@@ -53,9 +55,35 @@ const Basic: React.FC<any> = observer((props) => {
 
         <FieldBinder
           data={data}
-          name={'age'}
+          name={'password1'}
           required={true}
-          decorator={<FormItem label="年龄" />}
+          onChange={() => {
+            if (data.password1 != data.password2) {
+              data._feedback_extra_password2 = '前后密码不一致';
+              data._feedback_extra_password1 = '前后密码不一致';
+            } else {
+              data._feedback_extra_password2 = '';
+              data._feedback_extra_password1 = '';
+            }
+          }}
+          decorator={<FormItem label="新密码" />}
+        >
+          <MyInput />
+        </FieldBinder>
+        <FieldBinder
+          data={data}
+          name={'password2'}
+          onChange={() => {
+            if (data.password1 != data.password2) {
+              data._feedback_extra_password2 = '前后密码不一致';
+              data._feedback_extra_password1 = '前后密码不一致';
+            } else {
+              data._feedback_extra_password2 = '';
+              data._feedback_extra_password1 = '';
+            }
+          }}
+          required={true}
+          decorator={<FormItem label="再次输入新密码" />}
         >
           <MyInput />
         </FieldBinder>

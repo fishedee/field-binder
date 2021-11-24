@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "formily-field-binder",
+  "name": "field-binder",
   "version": "1.0.0",
   "scripts": {
     "start": "dumi dev",

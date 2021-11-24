@@ -23,3 +23,7 @@ footer: Open-source MIT Licensed | Copyright © 2020<br />Powered by [dumi](http
 <code src="./Basic.tsx"></code>
 
 基础使用
+
+<code src="./Extra.tsx"></code>
+
+基础使用

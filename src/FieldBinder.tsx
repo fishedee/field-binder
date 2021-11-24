@@ -7,6 +7,7 @@ type FieldBinderType = {
   name: string;
   required?: boolean;
   feedBackName?: string;
+  extraFeedbackName?: string;
   decorator?: JSX.Element;
   onChange?: (newValue: any) => void;
   children: JSX.Element;
@@ -16,6 +17,8 @@ const FieldBinder: React.FC<FieldBinderType> = observer((props) => {
   const fieldChecker = useFieldChecker();
   const hasDecorator = !!props.decorator;
   const feedBackName = props.feedBackName || '_feedback_' + props.name;
+  const extraFeedbackName =
+    props.extraFeedbackName || '_feedback_extra_' + props.name;
   const isRequired = !!props.required;
 
   let check = (newValue: any) => {
@@ -35,7 +38,8 @@ const FieldBinder: React.FC<FieldBinderType> = observer((props) => {
   useEffect(() => {
     let currentId = fieldChecker.getNextId();
     fieldChecker.putFieldBinder(currentId, async () => {
-      return feedbackCheck() == '';
+      let extraFeedbackText = props.data[extraFeedbackName] || '';
+      return feedbackCheck() == '' && extraFeedbackText == '';
     });
     return () => {
       fieldChecker.delFieldBinder(currentId);
@@ -55,12 +59,20 @@ const FieldBinder: React.FC<FieldBinderType> = observer((props) => {
   let decoratorProps: any = {};
   if (hasDecorator) {
     let feedbackText = props.data[feedBackName] || '';
-    if (feedbackText == '') {
+    let extraFeedbackText = props.data[extraFeedbackName] || '';
+    let allFeedbackText = [];
+    if (feedbackText != '') {
+      allFeedbackText.push(feedbackText);
+    }
+    if (extraFeedbackText != '') {
+      allFeedbackText.push(extraFeedbackText);
+    }
+    if (allFeedbackText.length == 0) {
       decoratorProps = {};
     } else {
       decoratorProps = {
         feedbackStatus: 'error',
-        feedbackText: feedbackText,
+        feedbackText: allFeedbackText.join('，'),
       };
     }
     if (isRequired) {
@@ -68,7 +80,6 @@ const FieldBinder: React.FC<FieldBinderType> = observer((props) => {
     } else {
       decoratorProps.asterisk = false;
     }
-    console.log(feedbackText);
 
     decoratorElement = props.decorator!;
   }
