@@ -35,13 +35,18 @@ class FieldChecker {
   }
 
   async check(): Promise<boolean> {
+    let hasFalse = false;
     for (let [_, value] of this.checkerMap) {
       let result = await value();
       if (result == false) {
-        return false;
+        hasFalse = true;
       }
     }
-    return true;
+    if (hasFalse) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
 
