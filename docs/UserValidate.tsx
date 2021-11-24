@@ -25,7 +25,7 @@ const MyInput: React.FC<any> = (props) => {
 
 const Basic: React.FC<any> = observer((props) => {
   let data = useMemo(() => {
-    return observable({});
+    return observable({} as any);
   }, []);
   let fieldChecker = useMemo(() => {
     return createFieldChecker();
@@ -35,26 +35,27 @@ const Basic: React.FC<any> = observer((props) => {
     console.log('all data', data);
   };
 
-  const check = () => {
-    fieldChecker.check();
+  const check = async () => {
+    console.log('校验结果为：' + (await fieldChecker.check()));
   };
+
+  console.log('top render');
 
   return (
     <FieldCheckerProvider value={fieldChecker}>
-      <FormLayout>
+      <FormLayout layout={'vertical'}>
         <FieldBinder
           data={data}
           name={'name'}
           required={true}
+          validator={(e) => {
+            if (e && e.startsWith('fish_')) {
+              return '';
+            } else {
+              return '需要以fish_开头';
+            }
+          }}
           decorator={<FormItem label="名字" />}
-        >
-          <MyInput />
-        </FieldBinder>
-
-        <FieldBinder
-          data={data}
-          name={'age'}
-          decorator={<FormItem label="年龄" />}
         >
           <MyInput />
         </FieldBinder>

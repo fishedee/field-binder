@@ -26,4 +26,8 @@ footer: Open-source MIT Licensed | Copyright © 2020<br />Powered by [dumi](http
 
 <code src="./Extra.tsx"></code>
 
-基础使用
+自定义 onChange 触发
+
+<code src="./UserValidate.tsx"></code>
+
+自定义 validator 触发
